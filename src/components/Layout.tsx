@@ -1,12 +1,22 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import DoubleButton from "./Custom/DoubleButton";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+
+  const linkClassName = (path: string) => {
+    const baseClasses = "text-l text-gray-700 hover:text-gray-900 mb-[5px]";
+    return router.pathname === path
+      ? `${baseClasses} font-bold border-b-2 border-gray-900`
+      : baseClasses;
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-maven-pro font-semibold">
       <header className="bg-white shadow-sm">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center">
             <Link
               href="/"
@@ -15,21 +25,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <img src="/images/logo.svg" className="size-[80px]" alt="" />
             </Link>
           </div>
-          <div className="flex items-center space-x-4 ">
-            <Link
-              href="/profile"
-              className="text-gray-700 hover:text-gray-900 font-bold"
-            >
-              Profile
-            </Link>
-            <Link href="/store" className="text-gray-700 hover:text-gray-900">
+          <div className="flex items-center space-x-8">
+            <Link href="/store" className={linkClassName("/store")}>
               Store
             </Link>
-            <Link
-              href="/leaderboard"
-              className="text-gray-700 hover:text-gray-900"
-            >
+            <Link href="/leaderboard" className={linkClassName("/leaderboard")}>
               Leaderboard
+            </Link>
+            <Link href="/profile" className={linkClassName("/profile")}>
+              My Profile
             </Link>
           </div>
           <DoubleButton buttonText="Connect wallet" />
