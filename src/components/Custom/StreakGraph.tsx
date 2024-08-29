@@ -41,6 +41,7 @@ const ContributionGraph: React.FC = () => {
 
   const getColor = useCallback((level: number | undefined): string => {
     if (level === undefined) return "#ebedf0"; // Light gray for empty boxes
+    if (level === 0) return "#ebedf0"; // Light gray for zero contributions
     const baseColor = { r: 20, g: 27, b: 235 }; // #141BEB
     const factor = level / 4; // Normalize to 0-1
     return `rgb(${baseColor.r + (255 - baseColor.r) * (1 - factor)}, 
@@ -107,17 +108,17 @@ const ContributionGraph: React.FC = () => {
   }, []);
 
   return (
-    <div ref={graphRef} className="p-4 bg-white rounded-lg shadow-md relative">
+    <div ref={graphRef} className="p-6 bg-white rounded-lg shadow-md relative">
       <div className="flex">
-        <div className="w-10 mr-2 mt-6">
+        <div className="w-12 mr-4 mt-8">
           {weekdays.map((day, index) => (
-            <div key={index} className="h-4 text-xs text-gray-400 mb-1">
+            <div key={index} className="h-5 text-xs text-gray-400 mb-1">
               {day}
             </div>
           ))}
         </div>
         <div>
-          <div className="flex mb-1">
+          <div className="flex mb-2">
             {months.map((month, index) => (
               <div
                 key={index}
@@ -129,11 +130,11 @@ const ContributionGraph: React.FC = () => {
           </div>
           <div className="flex">
             {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col">
+              <div key={weekIndex} className="flex flex-col mr-1">
                 {week.map((date, dayIndex) => (
                   <div
                     key={dayIndex}
-                    className="w-3 h-3 m-[1px] rounded-sm cursor-pointer"
+                    className="w-4 h-4 mb-1 rounded-sm cursor-pointer"
                     style={{
                       backgroundColor: date
                         ? getColor(contributionData[formatDate(date)])
@@ -153,7 +154,7 @@ const ContributionGraph: React.FC = () => {
           className="absolute bg-gray-800 text-white px-2 py-1 rounded shadow-lg text-xs whitespace-nowrap"
           style={{
             left: `${hoverInfo.x}px`,
-            top: `${hoverInfo.y - 30}px`,
+            top: `${hoverInfo.y - 35}px`,
             transform: "translateX(-50%)",
             pointerEvents: "none",
           }}
