@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import DoubleButton from "./Custom/DoubleButton";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -26,17 +26,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               Leaderboard
             </Link>
           </div>
-          <Button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-1 hover:translate-x-1">
-            Connect Wallet
-          </Button>
+          <DoubleButton buttonText="Connect wallet" />
         </nav>
       </header>
-      <main className="flex-grow p-4">{children}</main>
-      <footer className="bg-gray-100 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          © 2024 Your Company. All rights reserved.
-        </div>
-      </footer>
+      <main className="flex-grow p-8">{children}</main>
     </div>
   );
 };
