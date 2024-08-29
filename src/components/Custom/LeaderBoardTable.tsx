@@ -32,25 +32,23 @@ const LeaderboardTable = () => {
           {leaderboardData.map((player, index) => (
             <div
               key={player.id}
-              className={`flex p-4 transition-colors items-center ${
+              className={`flex p-4 px-16 transition-colors items-center ${
                 index !== leaderboardData.length - 1
                   ? "border-b-2 border-black"
                   : ""
               }`}
             >
-              <div className="flex-1 flex justify-center items-center">
+              <div className="flex-1 flex items-center">
                 {renderIdImages(player.id)}
               </div>
-              <div className="flex-1 font-bold text-lg text-center">
-                {player.name}.edu
-              </div>
-              <div className="flex-1 text-center">
+              <div className="flex-1 font-bold text-lg">{player.name}.edu</div>
+              <div className="flex-1 ml-[250px]">
                 <div className="font-bold text-sm">{player.badges} Badges</div>
                 <div className="font-bold text-sm text-gray-500">
                   Streak: {player.streak}
                 </div>
               </div>
-              <div className="flex-1 flex justify-center">
+              <div className=" flex items-center">
                 <TrophyDisplay trophies={player.trophies} />
               </div>
             </div>
