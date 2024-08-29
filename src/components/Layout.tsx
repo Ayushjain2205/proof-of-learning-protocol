@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen flex flex-col font-maven-pro font-semibold">
-      <header className="bg-white shadow-sm">
+      <header className="bg-white border-b-2 border-black">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center">
             <Link

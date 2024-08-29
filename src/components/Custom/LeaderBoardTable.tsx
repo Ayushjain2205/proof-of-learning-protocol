@@ -1,12 +1,5 @@
 import React from "react";
-
-const leaderboardData = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  name: `Player ${i + 1}`,
-  level: 1050 - i,
-  badges: Math.floor(Math.random() * 10),
-  streak: Math.floor(Math.random() * 365),
-}));
+import { leaderboardData } from "../../helpers/leaderboardData";
 
 const renderIdImages = (id: number): JSX.Element[] => {
   const digits = id.toString().split("");
@@ -20,10 +13,10 @@ const renderIdImages = (id: number): JSX.Element[] => {
   ));
 };
 
-const LevelDisplay = ({ level }: { level: number }) => (
+const TrophyDisplay = ({ trophies }: { trophies: number }) => (
   <div className="relative inline-flex items-center">
     <div className="bg-yellow-100 rounded px-4 py-2 flex items-center">
-      <span className="font-bold text-2xl mr-2">{level}</span>
+      <span className="font-bold text-2xl mr-2">{trophies}</span>
     </div>
     <div className="absolute -right-7 -top-1">
       <img src="/images/trophy.svg" className="h-[64px]" alt="Trophy" />
@@ -49,7 +42,7 @@ const LeaderboardTable = () => {
                 {renderIdImages(player.id)}
               </div>
               <div className="flex-1 font-bold text-lg text-center">
-                {player.name}
+                {player.name}.edu
               </div>
               <div className="flex-1 text-center">
                 <div className="font-bold text-sm">{player.badges} Badges</div>
@@ -58,7 +51,7 @@ const LeaderboardTable = () => {
                 </div>
               </div>
               <div className="flex-1 flex justify-center">
-                <LevelDisplay level={player.level} />
+                <TrophyDisplay trophies={player.trophies} />
               </div>
             </div>
           ))}
