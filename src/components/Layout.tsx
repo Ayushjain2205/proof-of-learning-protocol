@@ -6,10 +6,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col font-maven-pro font-semibold">
       <header className="bg-white shadow-sm">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  flex items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold">
-              Logo
+            <Link
+              href="/"
+              className="flex flex-row items-center gap-[10px] text-2xl font-bold"
+            >
+              <img src="/images/logo.svg" className="size-[80px]" alt="" />
             </Link>
           </div>
           <div className="flex items-center space-x-4">
