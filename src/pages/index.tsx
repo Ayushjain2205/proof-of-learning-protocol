@@ -10,9 +10,7 @@ export default function Home() {
     <div>
       Hello world?
       <CustomGumroadButton />
-      <div className="container mx-auto mt-8">
-        <StreakGraph />
-      </div>
+      <StreakGraph />
     </div>
   );
 }

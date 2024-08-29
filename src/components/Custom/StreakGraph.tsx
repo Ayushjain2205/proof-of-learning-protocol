@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
+import { format, parseISO } from "date-fns";
 
 const ContributionGraph = () => {
   const [hoverInfo, setHoverInfo] = useState(null);
@@ -17,10 +18,7 @@ const ContributionGraph = () => {
   }, [today]);
 
   const formatDate = useCallback((date) => {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+    return format(date, "yyyy-MM-dd");
   }, []);
 
   const contributionData = useMemo(() => {
@@ -79,9 +77,13 @@ const ContributionGraph = () => {
       if (date && graphRef.current) {
         const rect = event.target.getBoundingClientRect();
         const graphRect = graphRef.current.getBoundingClientRect();
+        const formattedDate = formatDate(date);
+        const activities = contributionData[formattedDate] || 0;
+        const tooltipContent = `${activities} contribution${
+          activities !== 1 ? "s" : ""
+        } on ${format(parseISO(formattedDate), "MMMM do")}`;
         setHoverInfo({
-          date: formatDate(date),
-          activities: contributionData[formatDate(date)] || 0,
+          content: tooltipContent,
           x: rect.left - graphRect.left + rect.width / 2,
           y: rect.top - graphRect.top,
         });
@@ -146,7 +148,7 @@ const ContributionGraph = () => {
             pointerEvents: "none",
           }}
         >
-          {hoverInfo.date}: {hoverInfo.activities} activities
+          {hoverInfo.content}
         </div>
       )}
     </div>
