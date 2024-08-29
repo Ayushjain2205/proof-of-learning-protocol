@@ -1,9 +1,19 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
 import { format, parseISO } from "date-fns";
 
-const ContributionGraph = () => {
-  const [hoverInfo, setHoverInfo] = useState(null);
-  const graphRef = useRef(null);
+interface ContributionData {
+  [date: string]: number;
+}
+
+interface HoverInfo {
+  content: string;
+  x: number;
+  y: number;
+}
+
+const ContributionGraph: React.FC = () => {
+  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
 
   const today = useMemo(() => {
     const date = new Date();
@@ -17,19 +27,19 @@ const ContributionGraph = () => {
     return date;
   }, [today]);
 
-  const formatDate = useCallback((date) => {
+  const formatDate = useCallback((date: Date): string => {
     return format(date, "yyyy-MM-dd");
   }, []);
 
-  const contributionData = useMemo(() => {
-    const data = {};
+  const contributionData = useMemo<ContributionData>(() => {
+    const data: ContributionData = {};
     for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
       data[formatDate(d)] = Math.floor(Math.random() * 5); // 0-4 for activity levels
     }
     return data;
   }, [startDate, today, formatDate]);
 
-  const getColor = useCallback((level) => {
+  const getColor = useCallback((level: number | undefined): string => {
     if (level === undefined) return "#ebedf0"; // Light gray for empty boxes
     const baseColor = { r: 20, g: 27, b: 235 }; // #141BEB
     const factor = level / 4; // Normalize to 0-1
@@ -55,10 +65,10 @@ const ContributionGraph = () => {
   ];
 
   const weeks = useMemo(() => {
-    const weeksArray = [];
+    const weeksArray: (Date | null)[][] = [];
     let currentDate = new Date(startDate);
     while (currentDate <= today) {
-      const week = [];
+      const week: (Date | null)[] = [];
       for (let i = 0; i < 7; i++) {
         if (currentDate <= today) {
           week.push(new Date(currentDate));
@@ -73,9 +83,9 @@ const ContributionGraph = () => {
   }, [startDate, today]);
 
   const handleMouseEnter = useCallback(
-    (date, event) => {
+    (date: Date | null, event: React.MouseEvent<HTMLDivElement>) => {
       if (date && graphRef.current) {
-        const rect = event.target.getBoundingClientRect();
+        const rect = event.currentTarget.getBoundingClientRect();
         const graphRect = graphRef.current.getBoundingClientRect();
         const formattedDate = formatDate(date);
         const activities = contributionData[formattedDate] || 0;
@@ -127,7 +137,7 @@ const ContributionGraph = () => {
                     style={{
                       backgroundColor: date
                         ? getColor(contributionData[formatDate(date)])
-                        : getColor(),
+                        : getColor(undefined),
                     }}
                     onMouseEnter={(e) => handleMouseEnter(date, e)}
                     onMouseLeave={handleMouseLeave}
