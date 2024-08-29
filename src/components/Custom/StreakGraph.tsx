@@ -1,35 +1,44 @@
-import React from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 
 const ContributionGraph = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 364);
+  const [hoverInfo, setHoverInfo] = useState(null);
+  const graphRef = useRef(null);
 
-  const formatDate = (date) => {
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }, []);
+
+  const startDate = useMemo(() => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - 364);
+    return date;
+  }, [today]);
+
+  const formatDate = useCallback((date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
       "0"
     )}-${String(date.getDate()).padStart(2, "0")}`;
-  };
+  }, []);
 
-  const generateDummyData = () => {
+  const contributionData = useMemo(() => {
     const data = {};
     for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
       data[formatDate(d)] = Math.floor(Math.random() * 5); // 0-4 for activity levels
     }
     return data;
-  };
+  }, [startDate, today, formatDate]);
 
-  const contributionData = generateDummyData();
-
-  const getColor = (level) => {
+  const getColor = useCallback((level) => {
+    if (level === undefined) return "#ebedf0"; // Light gray for empty boxes
     const baseColor = { r: 20, g: 27, b: 235 }; // #141BEB
     const factor = level / 4; // Normalize to 0-1
     return `rgb(${baseColor.r + (255 - baseColor.r) * (1 - factor)}, 
                  ${baseColor.g + (255 - baseColor.g) * (1 - factor)}, 
                  ${baseColor.b + (255 - baseColor.b) * (1 - factor)})`;
-  };
+  }, []);
 
   const weekdays = ["Mon", "", "Wed", "", "Fri", "", ""];
   const months = [
@@ -47,8 +56,8 @@ const ContributionGraph = () => {
     "Dec",
   ];
 
-  const getWeeks = () => {
-    const weeks = [];
+  const weeks = useMemo(() => {
+    const weeksArray = [];
     let currentDate = new Date(startDate);
     while (currentDate <= today) {
       const week = [];
@@ -60,15 +69,33 @@ const ContributionGraph = () => {
         }
         currentDate.setDate(currentDate.getDate() + 1);
       }
-      weeks.push(week);
+      weeksArray.push(week);
     }
-    return weeks;
-  };
+    return weeksArray;
+  }, [startDate, today]);
 
-  const weeks = getWeeks();
+  const handleMouseEnter = useCallback(
+    (date, event) => {
+      if (date && graphRef.current) {
+        const rect = event.target.getBoundingClientRect();
+        const graphRect = graphRef.current.getBoundingClientRect();
+        setHoverInfo({
+          date: formatDate(date),
+          activities: contributionData[formatDate(date)] || 0,
+          x: rect.left - graphRect.left + rect.width / 2,
+          y: rect.top - graphRect.top,
+        });
+      }
+    },
+    [formatDate, contributionData]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setHoverInfo(null);
+  }, []);
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div ref={graphRef} className="p-4 bg-white rounded-lg shadow-md relative">
       <div className="flex">
         <div className="w-10 mr-2 mt-6">
           {weekdays.map((day, index) => (
@@ -94,19 +121,14 @@ const ContributionGraph = () => {
                 {week.map((date, dayIndex) => (
                   <div
                     key={dayIndex}
-                    className="w-3 h-3 m-[1px] rounded-sm"
+                    className="w-3 h-3 m-[1px] rounded-sm cursor-pointer"
                     style={{
                       backgroundColor: date
-                        ? getColor(contributionData[formatDate(date)] || 0)
-                        : "transparent",
+                        ? getColor(contributionData[formatDate(date)])
+                        : getColor(),
                     }}
-                    title={
-                      date
-                        ? `${formatDate(date)}: ${
-                            contributionData[formatDate(date)] || 0
-                          } contributions`
-                        : ""
-                    }
+                    onMouseEnter={(e) => handleMouseEnter(date, e)}
+                    onMouseLeave={handleMouseLeave}
                   />
                 ))}
               </div>
@@ -114,6 +136,19 @@ const ContributionGraph = () => {
           </div>
         </div>
       </div>
+      {hoverInfo && (
+        <div
+          className="absolute bg-gray-800 text-white px-2 py-1 rounded shadow-lg text-xs whitespace-nowrap"
+          style={{
+            left: `${hoverInfo.x}px`,
+            top: `${hoverInfo.y - 30}px`,
+            transform: "translateX(-50%)",
+            pointerEvents: "none",
+          }}
+        >
+          {hoverInfo.date}: {hoverInfo.activities} activities
+        </div>
+      )}
     </div>
   );
 };
