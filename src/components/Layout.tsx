@@ -15,8 +15,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <img src="/images/logo.svg" className="size-[80px]" alt="" />
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/profile" className="text-gray-700 hover:text-gray-900">
+          <div className="flex items-center space-x-4 ">
+            <Link
+              href="/profile"
+              className="text-gray-700 hover:text-gray-900 font-bold"
+            >
               Profile
             </Link>
             <Link href="/store" className="text-gray-700 hover:text-gray-900">
