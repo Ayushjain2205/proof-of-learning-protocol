@@ -113,7 +113,7 @@ const ContributionGraph: React.FC = () => {
         const graphRect = graphRef.current.getBoundingClientRect();
         const formattedDate = formatDate(date);
         const activities = contributionData[formattedDate] || 0;
-        const tooltipContent = `${activities} contribution${
+        const tooltipContent = `${activities} activities${
           activities !== 1 ? "s" : ""
         } on ${format(parseISO(formattedDate), "MMMM do")}`;
         setHoverInfo({

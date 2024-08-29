@@ -36,7 +36,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               My Profile
             </Link>
           </div>
-          <DoubleButton buttonText="Connect wallet" />
+          <div className="flex flex-row items-center gap-[10px]">
+            <img src="/images/coins.svg" className="size-[80px]" alt="" />
+            <DoubleButton buttonText="Connect wallet" />
+          </div>
         </nav>
       </header>
       <main className="flex-grow p-8">{children}</main>
