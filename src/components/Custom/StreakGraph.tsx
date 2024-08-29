@@ -1,5 +1,11 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
-import { format, parseISO } from "date-fns";
+import {
+  format,
+  parseISO,
+  eachMonthOfInterval,
+  startOfMonth,
+  endOfMonth,
+} from "date-fns";
 
 interface ContributionData {
   [date: string]: number;
@@ -50,20 +56,10 @@ const ContributionGraph: React.FC = () => {
   }, []);
 
   const weekdays = ["Mon", "", "Wed", "", "Fri", "", ""];
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+
+  const months = useMemo(() => {
+    return eachMonthOfInterval({ start: startDate, end: today });
+  }, [startDate, today]);
 
   const weeks = useMemo(() => {
     const weeksArray: (Date | null)[][] = [];
@@ -82,6 +78,33 @@ const ContributionGraph: React.FC = () => {
     }
     return weeksArray;
   }, [startDate, today]);
+
+  const monthPositions = useMemo(() => {
+    const positions: { [key: string]: { index: number; width: number } } = {};
+    months.forEach((month) => {
+      const monthStart = startOfMonth(month);
+      const monthEnd = endOfMonth(month);
+      let startIndex = -1;
+      let endIndex = -1;
+
+      weeks.forEach((week, weekIndex) => {
+        week.forEach((date) => {
+          if (date && date >= monthStart && date <= monthEnd) {
+            if (startIndex === -1) startIndex = weekIndex;
+            endIndex = weekIndex;
+          }
+        });
+      });
+
+      if (startIndex !== -1) {
+        positions[format(month, "MMM")] = {
+          index: startIndex,
+          width: (endIndex - startIndex + 1) * 20, // 20px is the width of each week column
+        };
+      }
+    });
+    return positions;
+  }, [weeks, months]);
 
   const handleMouseEnter = useCallback(
     (date: Date | null, event: React.MouseEvent<HTMLDivElement>) => {
@@ -118,15 +141,23 @@ const ContributionGraph: React.FC = () => {
           ))}
         </div>
         <div>
-          <div className="flex mb-2">
-            {months.map((month, index) => (
-              <div
-                key={index}
-                className="flex-1 text-center text-xs text-gray-400"
-              >
-                {month}
-              </div>
-            ))}
+          <div className="h-4 mb-2 relative">
+            {months.map((month, index) => {
+              const monthKey = format(month, "MMM");
+              const position = monthPositions[monthKey];
+              return position ? (
+                <div
+                  key={index}
+                  className="absolute text-xs text-gray-400"
+                  style={{
+                    left: `${position.index * 20}px`,
+                    width: `${position.width}px`,
+                  }}
+                >
+                  {monthKey}
+                </div>
+              ) : null;
+            })}
           </div>
           <div className="flex">
             {weeks.map((week, weekIndex) => (
