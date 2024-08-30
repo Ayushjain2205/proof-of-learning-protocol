@@ -17,7 +17,7 @@ interface HoverInfo {
   y: number;
 }
 
-const ContributionGraph: React.FC = () => {
+const ActivityGraph: React.FC = () => {
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   const graphRef = useRef<HTMLDivElement>(null);
 
@@ -132,6 +132,7 @@ const ContributionGraph: React.FC = () => {
 
   return (
     <div ref={graphRef} className="p-6 bg-white rounded-lg shadow-md relative">
+      <h2 className="text-lg font-semibold mb-4">Activity Graph</h2>
       <div className="flex">
         <div className="w-12 mr-4 mt-8">
           {weekdays.map((day, index) => (
@@ -197,4 +198,4 @@ const ContributionGraph: React.FC = () => {
   );
 };
 
-export default ContributionGraph;
+export default ActivityGraph;

@@ -1,3 +1,4 @@
+import ActivityGraph from "@/components/Custom/ActivityGraph";
 import React from "react";
 
 interface TrophyDisplayProps {
@@ -57,7 +58,11 @@ const profile: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1">Other Column</div>
+      <div className="flex flex-1">
+        <div className="flex">
+          <ActivityGraph />
+        </div>
+      </div>
     </div>
   );
 };

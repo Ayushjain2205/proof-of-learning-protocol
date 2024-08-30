@@ -53,7 +53,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="flex flex-row items-center gap-[60px]">
             <CoinDisplay coins={100} />{" "}
-            {/* Replace 100 with actual coin count */}
             <DoubleButton buttonText="Connect wallet" />
           </div>
         </nav>
