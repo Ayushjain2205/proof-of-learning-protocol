@@ -42,8 +42,8 @@ const DoubleButtonWrapper: React.FC<{
   <div onClick={() => onClick(category)}>
     <DoubleButton
       buttonText={category.charAt(0).toUpperCase() + category.slice(1)}
-      buttonColor={activeCategory === category ? "black" : "#00EDBE"}
-      backgroundColor={activeCategory === category ? "#00EDBE" : "white"}
+      buttonColor={activeCategory === category ? "#141BEB" : "#00EDBE"}
+      backgroundColor={activeCategory === category ? "#00EDBE" : "#141BEB"}
       width="140px"
       height="48px"
     />
