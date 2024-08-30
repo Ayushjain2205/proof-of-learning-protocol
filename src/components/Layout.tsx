@@ -3,6 +3,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import DoubleButton from "./Custom/DoubleButton";
 
+interface CoinDisplayProps {
+  coins: number;
+}
+
+const CoinDisplay: React.FC<CoinDisplayProps> = ({ coins }) => (
+  <div className="relative inline-flex items-center">
+    <div className="bg-blue-100 rounded px-4 py-2 flex items-center">
+      <span className="font-bold text-2xl mr-2">{coins}</span>
+    </div>
+    <div className="absolute -right-14 -top-">
+      <img src="/images/coins.svg" className="h-[84px]" alt="Coins" />
+    </div>
+  </div>
+);
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
@@ -36,8 +51,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               My Profile
             </Link>
           </div>
-          <div className="flex flex-row items-center gap-[10px]">
-            <img src="/images/coins.svg" className="size-[80px]" alt="" />
+          <div className="flex flex-row items-center gap-[60px]">
+            <CoinDisplay coins={100} />{" "}
+            {/* Replace 100 with actual coin count */}
             <DoubleButton buttonText="Connect wallet" />
           </div>
         </nav>
