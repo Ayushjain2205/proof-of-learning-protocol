@@ -132,7 +132,10 @@ const ActivityGraph: React.FC = () => {
 
   return (
     <div ref={graphRef} className="p-6 bg-white rounded-lg shadow-md relative">
-      <h2 className="text-lg font-semibold mb-4">Activity Graph</h2>
+      <div className="flex items-center mb-4">
+        <img src="/images/streak.svg" className="h-8" alt="" />
+        <h2 className="text-lg font-semibold ">Activity Graph</h2>
+      </div>
       <div className="flex">
         <div className="w-12 mr-4 mt-8">
           {weekdays.map((day, index) => (
