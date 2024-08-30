@@ -10,7 +10,7 @@ interface BadgeProps {
 const Badge: React.FC<BadgeProps> = ({ title, subtitle, icon, footer }) => {
   return (
     <div className="relative inline-block group w-[350px] h-[400px] cursor-pointer">
-      <div className="relative z-30 p-4 border-2 border-black rounded bg-white transition-transform duration-300 ease-in-out group-hover:-translate-x-[3%] group-hover:-translate-y-[3%] h-full">
+      <div className="relative z-30 p-4 border-2 border-black rounded bg-white transition-transform duration-300 ease-in-out group-hover:-translate-x-[3%] group-hover:-translate-y-[3%] h-full transform -translate-x-[1%] -translate-y-[1%]">
         <div className="flex flex-col flex-1 w-full justify-between items-start mb-4">
           <div className="flex flex-row justify-between w-full">
             <img src="/images/logo.svg" className="h-10" alt="" />
@@ -38,9 +38,9 @@ const Badge: React.FC<BadgeProps> = ({ title, subtitle, icon, footer }) => {
           </div>
         )}
       </div>
-      <div className="absolute top-0 left-0 z-20 w-full h-full border-2 border-black rounded"></div>
+      <div className="absolute top-0 left-0 z-20 w-full h-full  rounded"></div>
       <div
-        className="absolute top-0 left-0 z-10 w-full h-full rounded"
+        className="absolute top-0 left-0 z-10 w-full h-full rounded transform translate-x-1 translate-y-1"
         style={{ background: "#00EDBE" }}
       ></div>
     </div>

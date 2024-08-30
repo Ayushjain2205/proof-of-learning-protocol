@@ -73,7 +73,7 @@ const profile: React.FC = () => {
             <h2 className="text-lg font-semibold ">Badges</h2>
           </div>
           <div className="overflow-x-auto py-4 scrollbar-hide">
-            <div className="flex space-x-8">
+            <div className="flex space-x-8 px-8">
               {badges.map((badge, index) => (
                 <div key={index} className="flex-shrink-0">
                   <Badge
