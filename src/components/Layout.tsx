@@ -51,9 +51,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               My Profile
             </Link>
           </div>
-          <div className="flex flex-row items-center gap-[60px]">
-            <CoinDisplay coins={100} />{" "}
-            <DoubleButton buttonText="Connect wallet" />
+          <div className="flex flex-row items-center gap-[80px]">
+            <CoinDisplay coins={800} />{" "}
+            <DoubleButton buttonText="0xCafa9...1fD0" />
           </div>
         </nav>
       </header>

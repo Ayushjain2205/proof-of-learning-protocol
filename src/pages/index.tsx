@@ -100,16 +100,19 @@ export default function Home() {
       timeOffset: number
     ): Activity => ({
       id,
-      user: names[parseInt(id) - 1],
+      user: names[Math.floor(Math.random() * names.length)],
       type: types[Math.floor(Math.random() * types.length)],
       timestamp: new Date(Date.now() - timeOffset),
     });
 
-    const initialActivities: Activity[] = names.map((_, index) => {
-      const id = (index + 1).toString();
-      const timeOffset = Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000); // Random time within the last week
-      return generateRandomActivity(id, timeOffset);
-    });
+    const initialActivities: Activity[] = Array.from(
+      { length: 20 },
+      (_, index) => {
+        const id = (index + 1).toString();
+        const timeOffset = Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000); // Random time within the last week
+        return generateRandomActivity(id, timeOffset);
+      }
+    );
 
     initialActivities.sort(
       (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
@@ -119,12 +122,12 @@ export default function Home() {
     const timer1 = setTimeout(() => {
       const newActivity = generateRandomActivity("21", 0);
       setActivities((prev) => [newActivity, ...prev]);
-    }, 25000);
+    }, 10000);
 
     const timer2 = setTimeout(() => {
       const newActivity = generateRandomActivity("22", 0);
       setActivities((prev) => [newActivity, ...prev]);
-    }, 45000);
+    }, 20000);
 
     return () => {
       clearTimeout(timer1);
@@ -141,6 +144,7 @@ export default function Home() {
         activity.timestamp.toDateString() ===
           new Date(selectedDate).toDateString())
   );
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">Recent Activities</h1>

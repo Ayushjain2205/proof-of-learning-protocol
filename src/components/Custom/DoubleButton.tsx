@@ -2,7 +2,7 @@ import React from "react";
 
 const DoubleButton = ({
   buttonText = "Get",
-  buttonColor = "blue",
+  buttonColor = "#141BEB",
   backgroundColor = "#00EDBE",
   width = "185px",
   height = "48px",
